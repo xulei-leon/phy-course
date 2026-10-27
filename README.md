@@ -2,6 +2,8 @@
 
 静态物理课程网站。首页以卡片列出课程，目前提供 [PHY489 / 1489 粒子物理](phy489/)。课件可在浏览器直接打开，无需构建或后台服务。
 
+在线访问：[https://xulei-leon.github.io/phy-course/](https://xulei-leon.github.io/phy-course/)
+
 ## 本地浏览
 
 打开仓库根目录的 `index.html`，从课程卡片进入课件；也可直接打开 `phy489/index.html`。请保留课程目录内的文件及相对路径。
