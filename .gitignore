@@ -1,4 +1,7 @@
 # Logs
+/courseware/
+/phy489/courseware/
+
 logs
 *.log
 npm-debug.log*
