@@ -1,6 +1,6 @@
 # Physics Courses
 
-静态物理课程网站。首页以卡片列出课程，目前提供 [PHY489 / 1489 粒子物理](phy489/)。课件可在浏览器直接打开，无需构建或后台服务。
+静态物理课程网站。首页以卡片列出课程，目前提供 [PHY456H1 量子力学 II（24 页）](phy456/)和 [PHY489 / 1489 粒子物理](phy489/)。课件可在浏览器直接打开，无需构建或后台服务。
 
 在线访问：[https://xulei-leon.github.io/phy-course/](https://xulei-leon.github.io/phy-course/)
 
