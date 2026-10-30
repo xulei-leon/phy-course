@@ -26,8 +26,9 @@ jobs:
       - name: Prepare public site
         run: |
           mkdir -p "$RUNNER_TEMP/pages-site"
-          rsync -a --exclude='/.git/' --exclude='/.github/' --exclude='/phy489/courseware/' ./ "$RUNNER_TEMP/pages-site/"
+          rsync -a --exclude='/.git/' --exclude='/.github/' --exclude='/phy489/courseware/' --exclude='/phy460/courseware/' ./ "$RUNNER_TEMP/pages-site/"
           test ! -e "$RUNNER_TEMP/pages-site/phy489/courseware"
+          test ! -e "$RUNNER_TEMP/pages-site/phy460/courseware"
       - uses: actions/upload-pages-artifact@v3
         with:
           path: ${{ runner.temp }}/pages-site
