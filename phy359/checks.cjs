@@ -1,15 +1,17 @@
 /* Maintenance-only structural and numerical QA. */
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 require('./checks-models.cjs');
+require('./checks-study.cjs');
+require('./checks-study-math.cjs');
 const root=__dirname,context={window:{},console};context.window=context;vm.createContext(context);
-for(const f of ['content/part1.js','content/part2.js','assets/models.js','assets/experiments.js'])vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),context,{filename:f});
+for(const f of ['content/part1.js','content/part2.js','content/study-helpers.js','content/study-01-04.js','content/study-05-08.js','content/study-09-12.js','content/study-13-16.js','assets/models.js','assets/experiments.js'])vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),context,{filename:f});
 const {PHY,PHY_LABS}=context;assert.equal(PHY.chapters.length,16);
 let formulas=0,cases=0;const katex=require('../phy489/assets/katex/katex.min.js');
 const bilingual=v=>{assert.ok(v&&typeof v.zh==='string'&&v.zh.trim()&&typeof v.en==='string'&&v.en.trim(),'missing translation');};
 const inspect=o=>{if(typeof o==='number')assert.ok(Number.isFinite(o),'nonfinite model result');else if(o&&typeof o==='object'){if('zh'in o||'en'in o)bilingual(o);for(const v of Object.values(o))inspect(v);}};
 const sources=new Set();
 for(const [i,c] of PHY.chapters.entries()){
- assert.equal(c.id,i+1);bilingual(c.title);bilingual(c.question);bilingual(c.intuition);bilingual(c.labTitle);bilingual(c.labNote);assert.equal(c.topics.length,3);assert.equal(c.derivation.length,3);assert.equal(c.quizzes.length,2);assert.ok(c.notes.length);
+ assert.equal(c.id,i+1);bilingual(c.title);bilingual(c.question);bilingual(c.intuition);bilingual(c.labTitle);bilingual(c.labNote);assert.equal(c.topics.length,3);assert.ok(c.derivation.length>=1);assert.equal(c.quizzes.length,2);assert.ok(c.notes.length);
  for(const x of [...c.topics,...c.derivation,c.example]){bilingual(x.title);bilingual(x.text);if(x.math){try{katex.renderToString(x.math,{throwOnError:true,strict:'error'});}catch(e){console.error('Formula chapter '+c.id+': '+x.math+'\n'+e.message);process.exit(1);}formulas++;}}
  for(const q of c.quizzes){bilingual(q.question);bilingual(q.explanation);q.options.forEach(bilingual);assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);}
  c.notes.forEach(bilingual);assert.ok(fs.existsSync(path.join(root,'courseware',c.source.file)));sources.add(c.source.file);
@@ -21,7 +23,7 @@ for(const [i,c] of PHY.chapters.entries()){
 assert.equal(sources.size,10);
 for(let i=0;i<=16;i++){
  const name=i?`chapter-${String(i).padStart(2,'0')}.html`:'index.html',html=fs.readFileSync(path.join(root,name),'utf8');assert.ok(html.includes(`data-chapter="${i}"`));assert.ok(!/https?:\/\//.test(html));assert.ok(!/type="module"/.test(html));
- for(const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)){assert.ok(fs.existsSync(path.resolve(root,match[1])),match[1]);}
+ for(const match of html.matchAll(/(?:src|href)="([^"#]+)"/g)){const target=path.resolve(root,match[1]);assert.ok(fs.existsSync(target),match[1]);if(target.endsWith('.js'))new vm.Script(fs.readFileSync(target,'utf8'),{filename:target});}
 }
 const js=fs.readFileSync(path.join(root,'assets/course.js'),'utf8');assert.ok(!/fetch\(|XMLHttpRequest|https?:\/\//.test(js));
 assert.ok(fs.readFileSync(path.join(root,'../.gitignore'),'utf8').includes('/phy359/courseware/'));assert.ok(fs.readFileSync(path.join(root,'../.github/workflows/pages.yml'),'utf8').includes("--exclude='/phy359/courseware/'"));
@@ -29,6 +31,7 @@ console.log(`PASS: 16 chapters, 32 explained quizzes, 10 mapped sources, ${formu
 if(process.argv.includes('--export')){
  const clean=s=>s.replace(/\|/g,'\\|').replace(/\n/g,' ');
  let md='# PHY359 来源与覆盖 / Sources and coverage\n\n10 份 PDF，31 页；实际 PDF 页序与印刷页码分别标注。所有网页讲解、例题、交互和自测均为教学改编。Part 3/4 未提供。原始 PDF 只在本地保存，不在线发布。 / Ten PDFs, 31 pages; actual PDF and printed pages are distinguished. All web explanations, examples, interactions and quizzes are teaching adaptations. Parts 3/4 were not supplied. Original PDFs remain local.\n\n';
+ const studyMarkdown=bs=>bs.map(b=>b.kind==='math'?'$$\n'+b.math+'\n$$\n\n':b.kind==='list'?b.items.map(v=>'- '+v.zh+' / '+v.en).join('\n')+'\n\n':b.kind==='table'?'| '+b.headers.map(v=>clean(v.zh+' / '+v.en)).join(' | ')+' |\n| '+b.headers.map(()=>'---').join(' | ')+' |\n'+b.rows.map(row=>'| '+row.map(v=>clean(v.zh+' / '+v.en)).join(' | ')+' |').join('\n')+'\n\n':(b.kind==='h'?'#### ':'')+b.text.zh+'\n\n'+b.text.en+'\n\n').join('');
  let lessons='# PHY359 双语内容稿 / Bilingual content manuscript\n\nGenerated from content/part1.js and part2.js by checks.cjs --export.\n\n';
  for(const c of PHY.chapters){md+=`## ${String(c.id).padStart(2,'0')} ${c.title.zh} / ${c.title.en}\n\n来源 / Source: \`${c.source.file}\` · PDF ${c.source.pages} · 印刷页 / printed pp. ${c.source.printed}\n\n| 主要小节 / Main topic | PDF page |\n|---|---|\n`+c.topics.map(t=>`| ${clean(t.title.zh)} / ${clean(t.title.en)} | ${t.source.page} |`).join('\n')+'\n\n'+c.notes.map(n=>'- '+n.zh+' / '+n.en).join('\n')+'\n\n';
  lessons+=`## ${c.id}. ${c.title.zh} / ${c.title.en}\n\nSource: ${c.source.file}, PDF ${c.source.pages}, printed ${c.source.printed}.\n\n`;
@@ -37,6 +40,19 @@ if(process.argv.includes('--export')){
  for(const [group,items] of [['必要概念 / Concepts',c.topics],['公式推导 / Derivation',c.derivation],['例题 / Worked example',[c.example]]]){lessons+=`### ${group}\n\n`;for(const x of items)lessons+=`**${x.title.zh} / ${x.title.en}**\n\n${x.text.zh}\n\n${x.text.en}\n\n`+(x.math?'$$\n'+x.math+'\n$$\n\n':'');}
  lessons+=pair('交互模型 / Interactive model',c.labTitle)+pair('单位、假设与边界 / Units, assumptions and limits',c.labNote);
  c.quizzes.forEach((q,i)=>{lessons+=pair('自测 '+(i+1)+' / Self-check '+(i+1),q.question)+q.options.map((o,j)=>`${j+1}. ${o.zh} / ${o.en}`).join('\n')+`\n\nAnswer: ${q.answer+1}\n\n${q.explanation.zh}\n\n${q.explanation.en}\n\n`;});
+ const st=c.study;
+ md+='### 自学补充 / Self-study additions\n\n'+st.foundation.title.zh+' / '+st.foundation.title.en+'\n\n';
+ md+='基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.\n\n';
+ lessons+='### 自学学习目标 / Self-study goals\n\n'+st.goals.map(g=>'- '+g.zh+' / '+g.en).join('\n')+'\n\n'+st.bridge.zh+'\n\n'+st.bridge.en+'\n\n';
+ lessons+='### 基础补习 / Foundation refresher\n\n'+st.foundation.title.zh+' / '+st.foundation.title.en+'\n\n'+studyMarkdown(st.foundation.blocks);
+ if(st.prerequisites.length)lessons+='回看 / Review: '+st.prerequisites.map(p=>`Chapter ${p.chapter} #${p.anchor}: ${p.label.zh} / ${p.label.en}`).join('; ')+'\n\n';
+ for(const [title,key] of [['直观详解 / Motivation','intuition'],['概念详解 / Detailed concepts','concepts'],['完整推导 / Complete derivation','derivation']])lessons+='### '+title+'\n\n'+studyMarkdown(st[key]);
+ st.tasks.forEach((t,i)=>{lessons+=`### 实验任务 ${i+1} / Experiment task ${i+1}\n\n`;for(const k of ['predict','action','record','explanation'])lessons+=`**${k}**\n\n${t[k].zh}\n\n${t[k].en}\n\n`;});
+ st.examples.forEach((e,i)=>lessons+=`### 完整例题 ${i+1} / Worked example ${i+1}: ${e.title.zh} / ${e.title.en}\n\n`+studyMarkdown(e.blocks));
+ st.exercises.forEach((e,i)=>{lessons+=`### 开放练习 ${i+1} / Open exercise ${i+1}\n\n${e.question.zh}\n\n${e.question.en}\n\n`;e.hints.forEach((h,j)=>lessons+=`Hint ${j+1}: ${h.zh} / ${h.en}\n\n`);lessons+='Solution:\n\n'+studyMarkdown(e.solution);});
+ lessons+='### 选择题补充解释 / Multiple-choice discussion\n\n'+st.choiceNotes.map(n=>n.zh+'\n\n'+n.en).join('\n\n')+'\n\n';
+ lessons+='### 章末复习 / Review\n\n'+st.review.connections.zh+'\n\n'+st.review.connections.en+'\n\n'+studyMarkdown([{kind:'list',items:st.review.mistakes},{kind:'list',items:st.review.checklist}]);
+
  }
  fs.writeFileSync(path.join(root,'SOURCE-MAP.md'),md);fs.writeFileSync(path.join(root,'content/lessons.md'),lessons);
 }

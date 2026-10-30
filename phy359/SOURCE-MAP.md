@@ -14,6 +14,12 @@
 
 - 例题、模型与自测均为新增教学改编；出处对应主要概念，不表示原稿包含相同交互。 / Examples, models and quizzes are teaching additions. Sources support core concepts, not identical interactive material.
 
+### 自学补充 / Self-study additions
+
+从一个数到向量和矩阵 / From one number to vectors and matrices
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 02 线性回归与正规方程 / Linear regression and normal equations
 
 来源 / Source: `Part1/Lecture2.pdf` · PDF 1–4 · 印刷页 / printed pp. 3–6
@@ -26,6 +32,12 @@
 
 - 讲义 PDF p.2 从平均损失展开到求和时省略 1/P；本课件始终保留它。正规方程不变，梯度与学习率需按尺度匹配。 / The expansion on PDF p.2 drops 1/P. This lesson retains it; normal equations are unchanged but gradients and learning rates must use matching scales.
 
+### 自学补充 / Self-study additions
+
+求和、转置、平方长度与偏导 / Sums, transpose, squared length and partial derivatives
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 03 秩、岭回归与正则化 / Rank, ridge regression and regularization
 
 来源 / Source: `Part1/Lecture2.pdf` · PDF 4 · 印刷页 / printed pp. 6
@@ -37,6 +49,12 @@
 | 偏差与泛化 / Bias and generalization | 4 |
 
 - 例题、模型与自测均为新增教学改编；出处对应主要概念，不表示原稿包含相同交互。 / Examples, models and quizzes are teaching additions. Sources support core concepts, not identical interactive material.
+
+### 自学补充 / Self-study additions
+
+独立方向、秩和特征值 / Independent directions, rank and eigenvalues
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 04 逻辑回归、似然与交叉熵 / Logistic regression, likelihood and cross-entropy
 
@@ -51,6 +69,12 @@
 - PDF p.3（印刷 p.9）最后两式标为 −log L，实际写的是 log L 的符号。本页从 Bernoulli 定义重推，采用正的 softplus(z)−yz 和梯度 p−y；驻点不因整体换号而改变。 / The last two formulas on PDF p.3 (printed p.9) are labeled −log L but have log L signs. Re-deriving from Bernoulli gives softplus(z)−yz and gradient p−y. An overall sign does not change stationary points.
 - 高熵表示给定概率模型下较大的平均惊讶度，不等于更多语义知识。p=0.5 的交叉熵基线为 log 2，并不意味着它是最大交叉熵。 / Higher entropy means greater average surprisal under the probability model, not greater semantic knowledge. The p=0.5 cross-entropy baseline log 2 is not a maximum cross-entropy.
 
+### 自学补充 / Self-study additions
+
+条件概率、似然与自然对数 / Conditional probability, likelihood and natural logarithms
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 05 梯度下降与反向传播 / Gradient descent and backpropagation
 
 来源 / Source: `Part1/Lecture4.pdf` · PDF 1–3 · 印刷页 / printed pp. 10–12
@@ -62,6 +86,12 @@
 | 隐藏层误差 / Hidden-layer error | 2 |
 
 - PDF p.2–3 所说“单次前向”指可复用前向量，并非无需反向计算。本页明确区分前向缓存和反向扫图；可微运算无需都有符号闭式表达。 / The “single forward pass” wording on PDF pp.2–3 means forward quantities can be reused; backward work is still required. Differentiable operations need not all have symbolic closed forms.
+
+### 自学补充 / Self-study additions
+
+链式法则、计算图与局部敏感度 / Chain rule, computation graphs and local sensitivity
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 06 核回归、插值与泛化 / Kernel regression, interpolation and generalization
 
@@ -75,6 +105,12 @@
 
 - PDF p.2 的“总能记忆”须加核满秩等条件。本页使用岭恒等式和满行秩极限，补足从不可逆 M 转向可逆 K 的论证。 / The p.2 “always memorize” statement requires conditions such as full kernel rank. The ridge identity and full-row-rank limit supply the missing justification for moving from singular M to invertible K.
 
+### 自学补充 / Self-study additions
+
+内积、相似度和两种空间 / Inner products, similarity and two spaces
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 07 二次损失与梯度下降稳定性 / Quadratic loss and GD stability
 
 来源 / Source: `Part2/Part2_Lecture1.pdf` · PDF 1–2 · 印刷页 / printed pp. 1–2
@@ -86,6 +122,12 @@
 | 正、零、负曲率 / Positive, zero and negative curvature | 2 |
 
 - 例题、模型与自测均为新增教学改编；出处对应主要概念，不表示原稿包含相同交互。 / Examples, models and quizzes are teaching additions. Sources support core concepts, not identical interactive material.
+
+### 自学补充 / Self-study additions
+
+斜率、曲率和几何级数 / Slope, curvature and geometric sequences
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 08 变化的曲率与稳定边缘 / Changing curvature and the edge of stability
 
@@ -99,6 +141,12 @@
 
 - 讲义“无效化大量二次近似文献”的表述过强。本页只说明局部固定二次模型的适用边界；未核验讲义引用的 2026 年语言模型论文，也不据此宣称当前最先进结果。 / The notes’ broad claim about invalidating quadratic literature is too strong. This lesson states the limit of a fixed local quadratic model. The cited 2026 language-model paper was not independently checked and is not used for a current state-of-the-art claim.
 
+### 自学补充 / Self-study additions
+
+Taylor 展开是附近的近似 / Taylor expansion is a local approximation
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 09 随机梯度下降与噪声方差 / Stochastic gradient descent and noise variance
 
 来源 / Source: `Part2/Part2_Lecture2.pdf` · PDF 1–2 · 印刷页 / printed pp. 6–7
@@ -110,6 +158,12 @@
 | 连续极限的尺度 / Continuum scaling | 2 |
 
 - 讲义 p.1 将求和损失与平均小批量梯度交替记号化；本页统一为平均梯度。q 固定时 η→0 得梯度流，并不代表所有缩放方式下随机性都消失。 / The p.1 notation alternates between summed loss and mean mini-batch gradients. This lesson uses mean gradients consistently. At fixed q, η→0 gives gradient flow; other scalings can retain randomness.
+
+### 自学补充 / Self-study additions
+
+期望、方差与条件平均 / Expectation, variance and conditional means
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 10 Hamilton 方程、阻尼与动量 / Hamilton equations, damping and momentum
 
@@ -123,6 +177,12 @@
 
 - 保留讲义从阻尼方程到离散算法的思路；有限步算法的 η 是定义后的系数，连续极限不能只令 dt→0 而保持所有系数任意不变。动量没有全局最优化保证。 / The notes’ damping-to-discrete construction is retained. The finite-step η is a defined coefficient; a continuum limit requires consistent coefficient scaling. Momentum gives no global optimization guarantee.
 
+### 自学补充 / Self-study additions
+
+速度、动量、力与 Hamiltonian / Velocity, momentum, force and Hamiltonian
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 11 预条件与参数空间的尺度 / Preconditioning and parameter-space scales
 
 来源 / Source: `Part2/Part2_Lecture4.pdf` · PDF 1 · 印刷页 / printed pp. 11
@@ -134,6 +194,12 @@
 | 坐标度量 / Coordinate metrics | 1 |
 
 - 讲义 p.1 用 gIJ 同时讨论度量与预条件；本页写 P 作为更新算子，明确几何最速下降使用逆度量。 / The notes use gIJ in discussing both metrics and preconditioners. This page calls the update operator P and states that geometric steepest descent uses the inverse metric.
+
+### 自学补充 / Self-study additions
+
+等高线、条件数与几何度量 / Contours, conditioning and geometric metrics
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 12 极分解与 Muon 更新方向 / Polar decomposition and Muon update directions
 
@@ -148,6 +214,12 @@
 - PDF p.1 把 (D²)⁻¹ᐟ² 写成 D⁻¹，只有 D 正定才成立。一般对称矩阵应取 |D|⁻¹，极因子是 sign(G)。矩形 UVᵀ 要用紧致维数与秩条件，不能称所有矩形矩阵为方阵正交矩阵。 / PDF p.1 replaces (D²)⁻¹ᐟ² by D⁻¹, valid only for positive D. In general use |D|⁻¹ and polar factor sign(G). Rectangular UVᵀ needs compact dimensions and rank conditions; a rectangular factor is not a square orthogonal matrix.
 - 来源关于最先进水平、年份、引用数与个人任职的表述未作当前事实使用。 / Source claims about state of the art, age, citation counts and personal affiliations are not used as current facts.
 
+### 自学补充 / Self-study additions
+
+正交、SVD、平方根与伪逆 / Orthogonality, SVD, square roots and pseudoinverses
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 13 Adam、二阶矩与解耦衰减 / Adam, second moments and decoupled decay
 
 来源 / Source: `Part2/Part2_Lecture4.pdf` · PDF 2–3 · 印刷页 / printed pp. 12–13
@@ -159,6 +231,12 @@
 | AdamW 衰减 / AdamW decay | 3 |
 
 - 讲义省略偏差修正与 ε。本页将其作为标准实现补全，并明确 v 是原始二阶矩。符号更新只在 β₁=β₂=0、非零梯度且忽略 ε 时精确成立。 / The notes omit bias correction and epsilon. These are added as standard implementation details; v is a raw second moment. The exact sign update requires β₁=β₂=0, nonzero gradient and negligible epsilon.
+
+### 自学补充 / Self-study additions
+
+指数平均为何需要修正 / Why exponential averages need correction
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 
 ## 14 变质量与能量守恒轨迹 / Variable mass and energy-conserving trajectories
 
@@ -172,6 +250,12 @@
 
 - 讲义的“到 Mathematica”未给完整求解。本页补出一维解析解，属于教学补全。γ<1 时存在有限到达时间，零点处原变量质量奇异，不能无说明继续积分。 / The notes’ “to Mathematica” step lacks a complete solution. The scalar analytic solution here is a teaching addition. For γ<1 arrival occurs in finite time, where the original mass is singular; continuation needs separate treatment.
 
+### 自学补充 / Self-study additions
+
+沿轨迹求导与分离变量 / Differentiating along a trajectory and separating variables
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 15 微正则测度与低损失集中 / Microcanonical measure and low-loss concentration
 
 来源 / Source: `Part2/Part2_Lecture5.pdf` · PDF 2 · 印刷页 / printed pp. 15
@@ -184,6 +268,12 @@
 
 - 本页保留讲义的微正则推导，但不把形式测度当作已证明可采样的分布。L₀ 选择、奇点、区域体积和遍历性均影响实际算法。 / The source derivation is retained without treating its formal measure as a proven sampleable distribution. L₀, singularities, region volumes and ergodicity all matter in an actual algorithm.
 
+### 自学补充 / Self-study additions
+
+密度、delta 函数与球壳体积 / Densities, delta functions and spherical shells
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
+
 ## 16 对称性、守恒量与优化边界 / Symmetry, conserved quantities and optimization limits
 
 来源 / Source: `Part2/Part2_Lecture5.pdf` · PDF 2–3 · 印刷页 / printed pp. 15–16
@@ -195,4 +285,10 @@
 | 材料边界 / Scope of the materials | 3 |
 
 - 讲义关于对称破缺改善语言模型的陈述视为来源中的研究叙述，未在本仓库复现。本页力矩模型是单独标注的教学改编。 / Source statements about symmetry breaking improving language models are treated as research claims in the notes, not reproduced in this repository. The torque model is a separately labeled teaching adaptation.
+
+### 自学补充 / Self-study additions
+
+对称性、循环坐标和角动量 / Symmetry, cyclic coordinates and angular momentum
+
+基础、完整推导、例题、实验任务与练习均为自主教学补充，不是原讲义的小节或配套答案。原始章节来源范围见上表。 / Foundations, expanded derivations, worked examples, tasks and exercises are original teaching additions, not source subsections or official answers. Source scope is listed above.
 

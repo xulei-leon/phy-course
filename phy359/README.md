@@ -31,7 +31,17 @@
 | 15 | 微正则测度与低损失集中 | Part 2 Lecture 5 |
 | 16 | 对称性、守恒量与优化边界 | Part 2 Lecture 5 |
 
-每章沿用：直观问题 → 必要概念 → 公式推导 → 交互实验 → 例题 → 自测与解释。每章有一个交互实验和两道带答案、解释的自测。
+每章沿用：直观问题 → 必要概念 → 公式推导 → 交互实验 → 例题 → 自测与解释。每章保留一个交互实验和两道带解释的选择题；另有可展开的基础补习、完整讲解、两道步骤例题、三个实验任务、三道开放练习与章末复习。
+
+## 自学阅读方式
+
+- 以基本代数和函数知识为起点。矩阵、偏导、概率、Hamilton 方程、SVD 与 delta 函数等在首次需要时讲解，后续章节提供“基础知识回看”链接。
+- 默认保持简要正文，详解在原生折叠区域内。点击“展开本章讲解”可展开全部教学区域；“收起本章讲解”恢复精简阅读。两者都不主动打开提示或答案。
+- 16 章新增 32 道完整步骤例题、48 个“预测—操作—记录—解释”实验任务、48 道开放练习。开放练习每题有两层提示和独立完整解答，不计入原选择题分数。
+- 语言切换保留展开状态、提示／答案状态、实验输入和选择题评分。回看链接携带语言，进入后自动展开基础知识区域；不承诺跨页恢复所有阅读状态。
+- 打印时自动展开完整教学区域，打印结束后恢复原折叠状态；练习提示与答案沿用读者原来的展开选择，不因整章展开而泄露答案。
+- 内容按章节组保存在 `content/study-01-04.js` 等四个文件中；结构化段落、公式、表格、任务和练习由共享逻辑渲染与导出，不依赖额外库或联网。
+- 自学补充标明为教学改编，不把新增基础知识说成原稿逐页内容。微正则章节额外说明密度的可积性，对称性章节区分恒质量与变质量角动量约束。
 
 ## 使用和资源
 
@@ -60,13 +70,14 @@
 
 ```bash
 node phy359/checks.cjs --export
+node phy359/checks-study-math.cjs
 node phy359/checks-browser.cjs /absolute/path/to/playwright [chromium-executable]
 ```
 
-第一条验证内容结构、双语、来源、85 个公式、390 组模型组合及独立数值关系，并重新生成来源表与合并内容稿。第二条在隔离 Chromium 中把全部 HTTPS 请求映射到仓库本地静态文件，模拟 `/phy-course/` 子路径；不启动服务器、不访问外网，也不导航 `file://`。它是渲染／交互验证，不是文件协议原生浏览验证。
+第一条验证简要与详解内容、双语、来源、250 个公式（原有 85 个与新增 165 个）、390 组模型组合，并重新生成来源表与完整双语内容稿。第二条独立核算新增例题与关键推导。第三条在隔离 Chromium 中把全部 HTTPS 请求映射到仓库本地静态文件，模拟 `/phy-course/` 子路径；不启动服务器、不访问外网，也不导航 `file://`。它是渲染／交互验证，不是文件协议原生浏览验证。
 
 实际验证结果和限制见 [verification.md](verification.md)。
 
 ## English quick start
 
-Open `index.html` directly and choose English. Keep this folder and `../phy489/assets/katex/` together. Sixteen chapters cover only the ten supplied lecture PDFs in Parts 1/2, with live dimensionless teaching models and 32 explained questions. This is an independent adaptation, not official answers or a complete course syllabus. Original PDFs remain local and are excluded from publication. Language changes preserve the current page state; chapter navigation preserves language but resets model values.
+Open `index.html` directly and choose English. Keep this folder and `../phy489/assets/katex/` together. Sixteen chapters cover only the ten supplied lecture PDFs in Parts 1/2. Concise summaries are supplemented by expandable foundations, full derivations, 32 worked examples, 48 guided experiment tasks and 48 open exercises with separate hints and solutions. The 32 original multiple-choice questions remain. Bulk expansion never opens answers; language switching preserves reading and experiment state. This is an independent adaptation, not official answers or a complete course syllabus. Original PDFs remain local and are excluded from publication. Language changes preserve the current page state; chapter navigation preserves language but resets model values.
