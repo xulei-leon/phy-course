@@ -3,6 +3,7 @@
 /phy489/courseware/
 /phy460/courseware/
 /phy407/courseware/
+/phy359/courseware/
 
 logs
 *.log
@@ -152,3 +153,4 @@ vite.config.ts.timestamp-*
 
 # Turbo Repo
 .turbo
+/docs/
