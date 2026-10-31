@@ -1,5 +1,16 @@
 # PHY407 来源与覆盖 / Sources and coverage
 
+## 自学扩展的来源边界 / Provenance of the self-study expansion
+
+2026-10-31 的扩展保留以下原有映射；当前工作区没有原稿，未重新核验 PDF 内容。新增目标、深入讲解、推导补充、第二例题、练习、深化实验和三个综合任务均为独立教学补充，不新增原稿页码或官方答案声明。
+
+The 2026-10-31 expansion retains the mappings below. Originals are absent from this workspace, so their contents were not reverified. New objectives, explanations, derivation steps, examples, exercises, advanced experiments and projects are independent teaching additions, without new source-page or official-answer claims.
+
+- 自然三次样条的 C² 连续性、自然边界与外推的区分 / C² continuity, natural boundaries and extrapolation: [SciPy CubicSpline](https://docs.scipy.org/doc/scipy/reference/generated/scipy.interpolate.CubicSpline.html).
+- DFT 符号、逆变换归一化、频率与实信号对称性 / DFT signs, inverse normalization, frequencies and real-signal symmetry: [NumPy Fourier reference](https://numpy.org/doc/stable/reference/routines.fft.html).
+- 其他新增关系通过网页中的代数推导、小型解析例子与独立数值不变量核对；不据这些核对声称获得了缺失的原始讲义。网页核心内容离线可用，上述外链仅用于可选核验。
+
+
 本表引用本地提供的第 1–6 讲材料。PDF 页为实际文件页序（从 1 开始），不是幻灯片页号。来源文件不在线发布；本表不包含原图或原文整页。章节拆分、双语说明、例题、代码和实验均为教学改编。
 
 12 份 PDF 共 113 页，加一份 HTML 示例；不推断尚未提供的后续讲次。部分标题页、空白输出单元和装饰页保留在来源范围中，但不作为独立知识点。

@@ -6,7 +6,8 @@
 
 - 每章按直观问题、必要概念、公式推导、交互实验、例题、自测与解释的顺序组织。
 - 侧栏选择章节，页脚按笔记顺序导航；第一章向前、最后一章向后均返回目录。
-- 推导逐步展开；打印时全部展开。每章一个实验区（部分有模型选择和多幅联动图）、一个步骤例题、三道带解释的自测，共 39 题。
+- 推导逐步展开；补充推导可折叠阅读，打印时展开。每章三个完整例题、原有三道选择题和新增四道计算／解释练习，共 39 个例题、91 道题。解释题自行对照参考答案，不计自动评分。
+- 新增先修与目标、实验预测任务、临界对照预设和章节复习。保留 13 个原实验区，另有 6 个补充实验区；所有实验独立调参和重置。
 - 语言切换保留当前参数、答案、评分、推导展开状态。章节链接携带语言参数；本地存储被禁用也能学习。不承诺刷新或跨章保存实验数值。
 - 小屏菜单可展开，Escape 关闭并返回按钮焦点。图表和长公式可横向滚动；控件可用键盘操作。真实浏览器验收限制见下文。
 
@@ -51,6 +52,8 @@ PDF 页码是从 1 开始的实际文件页序，区别于印刷页码和手写�
 
 - `chapter-01.html` 至 `chapter-13.html`：独立章节入口。
 - `content/01-04.js`、`05-09.js`、`10-13.js`：双语教学正文、推导、例题与题目。
+- `content/study.js`：13 章双语教学补充、26 个新例题、52 道计算／解释练习及知识点关联。
+- `assets/study-labs.js`、`assets/study-ui.js`：6 个补充实验区及扩展教学界面；矩阵实验增加初值与实特征方向，复场支持 n=2–6。
 - `content/sources.js`：当前 PDF 的章节／小节页码及原稿来源映射，不含原稿图片或 PDF 内容。
 - `assets/course.js`、`course.css`：独立界面逻辑；沿用 PHY489 的已确认设计，不改变其他课程。
 - `assets/models.js`：无 DOM 的数值函数；`experiments.js`：控件定义和实验数据。
@@ -63,14 +66,19 @@ PDF 页码是从 1 开始的实际文件页序，区别于印刷页码和手写�
 ```sh
 node phy460/checks.cjs
 node phy460/checks-dom.cjs /absolute/path/to/jsdom
+node phy460/checks-study.cjs /absolute/path/to/jsdom
 ```
 
-第一项无需外部测试依赖；第二项需要维护者提供 jsdom，但不会启动浏览器或服务器。内容数据与模型变更后应运行两者。来源页码变更时，需要重新核对 PDF 书签、来源映射和 `SOURCE-MAP.md`，不能仅按 TeX 行号更新。
+第一项无需外部测试依赖；后两项的 DOM 检查需要维护者提供 jsdom，但不会启动浏览器或服务器。第三项不传参数时仅运行补充内容与数值检查。内容数据与模型变更后应运行三项。来源页码变更时，需要重新核对 PDF 书签、来源映射和 `SOURCE-MAP.md`，不能仅按 TeX 行号更新。
 
 本次真实浏览器检查受工具安全策略阻挡，桌面／手机截图、实际字体、溢出及原生键盘行为尚未验收。详见 [verification.md](verification.md)。静态检查、DOM 模拟和数学验证不能冒充浏览器或物理实验验证。
 
 ## English quick start
 
-Open `index.html` directly and choose **English**. Keep the repository structure, including the shared offline KaTeX resources in `phy489/assets/katex/`. No server, network connection or installation is required to study. Each of the 13 chapters includes six learning stages, a live model, a worked example and three explained questions. Language switching preserves the current page’s state.
+Open `index.html` directly and choose **English**. Keep the repository structure, including the shared offline KaTeX resources in `phy489/assets/katex/`. No server, network connection or installation is required to study. Each of the 13 chapters includes six learning stages, three worked examples and seven questions (three original multiple-choice questions plus four numerical/explanation exercises). Explanation questions are self-assessed. Six additional experiment sections extend the original thirteen. Language switching preserves the current page’s state.
 
 The supplied 103-page notes define the coverage. All explanatory text, expanded derivations, examples and experiments are teaching adaptations, not official answers or measured data. Sources and unresolved inconsistencies are identified on each chapter. Original PDFs and related private materials remain local and are excluded from Git and Pages packaging. Automated DOM and numerical checks have been run; real-browser desktop/mobile visual verification is still pending due to the browser tool’s file-URL restriction.
+
+## 2026-10-31 自学扩展
+
+保留 13 章及 68 个来源主题和锚点。详见 [逐章审核与覆盖记录](SELF-STUDY-AUDIT.md)。新增讲解均标为教学补充；不虚构原始 PDF 页码。当前工作区缺少 `courseware/`，本轮未重新核对原始笔记。浏览器 file 协议受工具策略阻止，真实浏览器验收仍待完成。

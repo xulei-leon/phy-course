@@ -1,7 +1,7 @@
 /* Maintenance-only tests; learning needs no Node, build, or server. */
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 const root=__dirname,ctx=vm.createContext({console});ctx.window=ctx;
-const scripts=['content/sources.js','content/01-04.js','content/05-09.js','content/10-13.js','assets/models.js','assets/experiments.js'];
+const scripts=['content/sources.js','content/01-04.js','content/05-09.js','content/10-13.js','assets/models.js','assets/experiments.js','content/study.js','assets/study-labs.js'];
 for(const file of scripts)vm.runInContext(fs.readFileSync(path.join(root,file),'utf8'),ctx,{filename:file});
 const C=ctx.PHY.chapters,M=ctx.PHY_MATH,L=ctx.PHY_LABS,katex=require('../phy489/assets/katex/katex.min.js');
 const near=(x,y,tol=1e-8)=>assert.ok(Math.abs(x-y)<tol,`${x} differs from ${y} (tol ${tol})`);
@@ -44,7 +44,7 @@ const hopf=M.rk4(([r])=>[.25*r-r**3],[.8],{h:.01,time:10});const analytic=Math.s
 const zeroCircle=L.ch12.calc({type:'super',mu:1,b:-1,r0:1});assert.ok(zeroCircle.message.en.includes('equilibria'));
 // Offline entry points, local fonts, no fetch/module/network runtime.
 for(let id=0;id<=13;id++){const f=id?`chapter-${String(id).padStart(2,'0')}.html`:'index.html',html=fs.readFileSync(path.join(root,f),'utf8');assert.ok(html.includes(`data-chapter="${id}"`));assert.ok(html.includes("connect-src 'none'"));for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){assert.ok(!/^(?:https?:|\/)/.test(m[1]));assert.ok(fs.existsSync(path.resolve(root,m[1])),`${f}: missing ${m[1]}`);}}
-for(const f of [...scripts,'assets/course.js'])assert.ok(!/\bfetch\s*\(|XMLHttpRequest|https?:\/\//.test(fs.readFileSync(path.join(root,f),'utf8')));
+for(const f of [...scripts,'assets/course.js','assets/study-ui.js'])assert.ok(!/\bfetch\s*\(|XMLHttpRequest|https?:\/\//.test(fs.readFileSync(path.join(root,f),'utf8')));
 const css=fs.readFileSync(path.join(root,'../phy489/assets/katex/katex.min.css'),'utf8');for(const m of css.matchAll(/url\(([^)]+)\)/g))assert.ok(fs.existsSync(path.join(root,'../phy489/assets/katex',m[1])));
 assert.ok(fs.readFileSync(path.join(root,'../.gitignore'),'utf8').includes('/phy460/courseware/'));
 assert.ok(fs.readFileSync(path.join(root,'../.github/workflows/pages.yml'),'utf8').includes("--exclude='/phy460/courseware/'"));

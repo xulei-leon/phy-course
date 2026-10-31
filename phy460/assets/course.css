@@ -9,3 +9,22 @@
 
 /* PHY460 extensions retain the PHY489 visual language. */
 .topic p,.derivation-step p{white-space:pre-line}.topic-source{font-size:12px;color:var(--muted);margin-bottom:12px}.lab-figure{margin:24px 0}.lab-figure h4{font-size:17px;margin:0 0 10px}.chart .vector{stroke:#a6b5c8;stroke-width:1.2}.chart .fixed{stroke-width:2}.source-details summary{cursor:pointer;font-weight:600;padding:12px 0}.source-details li{margin:6px 0}.source-details ul{padding-left:22px}.source-warning{border-left:3px solid #d49b40;padding:12px 18px;background:#fbf7ef}.chapter-heading{flex-wrap:wrap}.chart-description{font-size:14px;color:var(--muted)}.readings output{font-size:19px}.sidebar-source a{padding:4px 20px}.chart-scroller:focus-visible,summary:focus-visible{outline:3px solid #d49b40;outline-offset:4px}@media(max-width:600px){.readings{gap:8px}.reading{min-width:120px}.lab-controls{padding:16px}.source-line{padding-top:0}.chapter-heading{gap:4px}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+/* Self-study additions reuse the lecture typography and six-stage layout. */
+.study-guide{margin:1.5rem 0;padding:1rem 1.25rem;border-left:3px solid #087e8b;background:#f4f9fa}
+.study-block,.study-derivations,.study-lab{margin:1.75rem 0}
+.study-lesson{margin:1rem 0;border-bottom:1px solid #d8e2e8;padding:.8rem 0}
+.study-lesson summary{cursor:pointer;font-weight:600;line-height:1.6}
+.study-lesson .study-block{margin:1rem 0}
+.study-quiz{margin:1.25rem 0;padding:1rem;border:1px solid #cbd5df;min-width:0}
+.study-quiz legend{font-weight:600;max-width:100%;padding:0 .3rem}
+.study-quiz label{display:block;margin:.75rem 0}
+.study-quiz input,.study-quiz textarea{display:block;max-width:100%;width:100%;box-sizing:border-box;margin-top:.5rem;padding:.65rem;font:inherit;color:inherit;background:white;border:1px solid #8797a8;border-radius:4px}
+.study-quiz input{max-width:20rem}
+.study-feedback{margin-top:1rem;padding:.75rem;background:#f4f7fa}
+.study-feedback.is-correct{border-left:3px solid #087e8b}
+.study-quiz a,.study-guide a{overflow-wrap:anywhere}
+.study-lab .lab-controls{margin-top:1rem}
+@media print{.study-lesson>.study-block{display:block!important}.study-lesson{break-inside:auto}.study-guide{background:white}}
+
+.study-presets{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0}
+.study-presets button{white-space:normal;text-align:left}

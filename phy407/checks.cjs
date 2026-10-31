@@ -1,7 +1,7 @@
 /* Maintenance checks only. Students need no Node, installation, or server. */
 const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),assert=require('node:assert/strict');
 const root=__dirname,ctx=vm.createContext({console});ctx.window=ctx;
-const scripts=['content/01-06.js','content/07-11.js','content/12-17.js','assets/models.js','assets/experiments.js'];
+const scripts=['content/01-06.js','content/07-11.js','content/12-17.js','assets/models.js','assets/experiments.js','content/study.js','assets/study-models.js','assets/study-labs.js','assets/projects.js'];
 for(const f of scripts)vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),ctx,{filename:f});
 const C=ctx.PHY.chapters,M=ctx.PHY_MATH,L=ctx.PHY_LABS,katex=require('../phy489/assets/katex/katex.min.js');
 const near=(a,b,tol=1e-9)=>assert.ok(Math.abs(a-b)<=tol,`${a} differs from ${b}; tolerance ${tol}`);
@@ -12,9 +12,9 @@ assert.equal(C.length,17);
 for(const [i,c] of C.entries()){
  assert.equal(c.id,i+1);assert.ok(c.lecture>=1&&c.lecture<=6);['title','question','intuition','labTitle','labNote'].forEach(k=>bi(c[k]));
  assert.ok(c.topics.length>=3);c.topics.forEach(x=>{block(x);assert.ok(x.source.page>=c.sources[x.source.sourceIndex||0].pages[0]&&x.source.page<=c.sources[x.source.sourceIndex||0].pages[1],`source page ${c.id}: ${x.source.page}`);topics++;});
- assert.ok(c.derivation.length>=3);c.derivation.forEach(block);block(c.example);assert.ok(c.notes.length);c.notes.forEach(bi);assert.ok(c.code);assert.equal(c.quizzes.length,3);
- for(const source of c.sources){assert.ok(fs.existsSync(path.join(root,'courseware',source.file)));sources.add(source.file);if(source.pages)assert.ok(source.pages[0]>0&&source.pages[1]>=source.pages[0]);}
- c.quizzes.forEach(q=>{bi(q.question);q.options.forEach(bi);bi(q.explanation);assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);});
+ assert.ok(c.derivation.length>=3);c.derivation.forEach(block);block(c.example);assert.ok(c.notes.length);c.notes.forEach(bi);assert.ok(c.code);assert.equal(c.quizzes.length,6);assert.equal(c.examples.length,2);c.examples.forEach(block);assert.ok(c.goals.length>=3&&c.goals.length<=5);c.goals.forEach(bi);assert.ok(c.supplements.length>=2);c.supplements.forEach(block);assert.equal(c.labTasks.length,4);c.labTasks.forEach(bi);c.takeaways.forEach(bi);c.prerequisites.forEach(n=>assert.ok(n>=1&&n<=17&&n!==c.id));
+ for(const source of c.sources){if(process.argv.includes('--sources'))assert.ok(fs.existsSync(path.join(root,'courseware',source.file)),'Missing local original: '+source.file);sources.add(source.file);if(source.pages)assert.ok(source.pages[0]>0&&source.pages[1]>=source.pages[0]);}
+ c.quizzes.forEach(q=>{bi(q.question);bi(q.hint);bi(q.steps);bi(q.explanation);assert.ok(q.id);if(q.type==='choice'){q.options.forEach(bi);assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);}else if(q.type==='number'){assert.ok(Number.isFinite(q.value)&&q.tolerance>=0);}else{assert.equal(q.type,'reflection');assert.ok(q.rubric.length>=2);q.rubric.forEach(bi);}});
  const lab=L[c.lab],base=Object.fromEntries(lab.controls.map(x=>[x.key,x.options?x.options[0][0]:x.value]));const samples=[base];
  for(const ctrl of lab.controls){bi(ctrl.label);if(ctrl.options){ctrl.options.forEach(([v,b])=>{bi(b);samples.push({...base,[ctrl.key]:v});});}else{assert.ok(ctrl.value>=ctrl.min&&ctrl.value<=ctrl.max);near((ctrl.value-ctrl.min)/ctrl.step,Math.round((ctrl.value-ctrl.min)/ctrl.step),1e-8);for(const value of [ctrl.min,ctrl.max])samples.push({...base,[ctrl.key]:value});}}
  // Check combined corners and all select alternatives, as well as individual boundaries.
@@ -58,4 +58,7 @@ for(const file of [...scripts,'assets/course.js'])assert.ok(!/\bfetch\s*\(|XMLHt
 const css=fs.readFileSync(path.join(root,'../phy489/assets/katex/katex.min.css'),'utf8');for(const m of css.matchAll(/url\(([^)]+)\)/g))assert.ok(fs.existsSync(path.join(root,'../phy489/assets/katex',m[1])));
 assert.ok(fs.readFileSync(path.join(root,'../.gitignore'),'utf8').includes('/phy407/courseware/'));
 assert.ok(fs.readFileSync(path.join(root,'../.github/workflows/pages.yml'),'utf8').includes("--exclude='/phy407/courseware/'"));
-console.log(`PASS: 17 chapters, ${topics} bilingual source topics, 51 explained quizzes, ${equations} formulas, ${states} model states, analytic/convergence checks, FFT/DFT and rectangular 2D checks, offline resources and source exclusions.`);
+console.log(`PASS: 17 chapters, ${topics} bilingual source topics, 34 worked examples, 102 staged exercises, ${equations} formulas, ${states} model states, analytic/convergence checks, FFT/DFT and rectangular 2D checks, offline resources and source exclusions.`);
+
+console.log(process.argv.includes('--sources')?'Local source-file existence checks passed; this does not verify source contents.':'Original materials: NOT REVERIFIED. Use --sources for local file-presence checks when materials are available.');
+require('./checks-study.cjs')({ctx,bi,block,near});
