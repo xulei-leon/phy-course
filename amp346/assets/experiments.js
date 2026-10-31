@@ -1,4 +1,4 @@
-/* Eleven analytic teaching experiments, paired with the eight source chapters. */
+/* Twelve analytic teaching experiments, paired with the eight source chapters. */
 (() => {'use strict';
 const M=APM_MATH,L=window.PHY_LABS={};
 const num=(key,zh,en,min,max,step,value)=>({key,label:B(zh,en),min,max,step,value});
@@ -43,4 +43,27 @@ return {readings:[read('标准差 √(2kt)','Standard deviation √(2kt)',sigma)
 L.convolution={title:B('高斯初值的解析卷积','Analytic convolution of Gaussian data'),controls:[num('M','总质量 M','Total mass M',0,3,.1,1),num('sigma','初始标准差 σ₀','Initial standard deviation σ₀',.3,2,.1,1),num('k','扩散系数 k','Diffusivity k',.1,2,.1,.5),num('t','时间 t','Time t',0,3,.1,1)],calc:s=>{
 const variance=s.sigma*s.sigma+2*s.k*s.t,extent=5*Math.sqrt(variance),pts=M.linspace(-extent,extent,500);
 return {readings:[read('当前方差 σ₀²+2kt','Current variance σ₀²+2kt',variance),read('当前中心值','Current center value',M.gaussian(0,s.t,s.k,s.M,s.sigma)),read('守恒质量（解析）','Conserved mass (analytic)',s.M)],charts:[graph('展宽与降峰','Spreading and a lower peak','x','u',[series('高斯初值','Gaussian initial data',pts.map(x=>[x,M.gaussian(x,0,s.k,s.M,s.sigma)]),{dash:true}),series('热演化','Heat evolution',pts.map(x=>[x,M.gaussian(x,s.t,s.k,s.M,s.sigma)]))])],message:B('这里用高斯与高斯卷积的闭式结果，不是任意输入函数的数值卷积器。t=0 返回光滑的初始高斯；不对奇异热核取 t=0。','This uses the closed form of Gaussian convolution, not a numerical convolution engine for arbitrary input. t=0 returns smooth initial Gaussian data; it does not evaluate the singular kernel at t=0.')};}};
+L.transverse={title:B('初始曲线与特征线：uₓ+uᵧ=0','Initial curve and characteristics: uₓ+uᵧ=0'),controls:[num('m','数据直线斜率 m','Data-line slope m',-2,2,.1,0),sel('data','数据 g(r)','Data g(r)',[['linear','g(r)=r','g(r)=r'],['zero','g(r)=0','g(r)=0']]),num('x','观测坐标 x','Observation x',-2,2,.1,1),num('y','观测坐标 y','Observation y',-2,2,.1,0)],calc:s=>{
+ const q=M.transverse(s.m,s.x,s.y,s.data),curves=[series('数据曲线 γ(r)=(r,mr)','Data curve γ(r)=(r,mr)',[[-2,-2*s.m],[2,2*s.m]],{color:'#112547'})];
+ for(const r of [-1,0,1])curves.push(series('从 r='+r+' 出发的特征线','Characteristic from r='+r,[[-3+r,-3+s.m*r],[3+r,3+s.m*r]],{dash:true}));
+ curves.push(series('经过观测点的特征线','Characteristic through observation',[[s.x-3,s.y-3],[s.x+3,s.y+3]],{color:'#cf8b3e'}));
+ const markers=[{x:s.x,y:s.y,type:'selected'}];if(q.footpoint)markers.push({x:q.footpoint[0],y:q.footpoint[1],type:'selected'});
+ return {readings:[read('行列式 m−1','Determinant m−1',q.determinant),read('观测点 u','Observed u',q.value===null?B('不由这些数据唯一确定','Not uniquely specified by these data'):q.value),read('梯度分量敏感度 |∂u/∂y|','Gradient sensitivity |∂u/∂y|',q.sensitivity===null?B('不适用','Not applicable'):q.sensitivity)],charts:[graph('横截或相切：图窗可能不含远处脚点','Transverse or tangent: distant footpoint may be outside the window','x','y',curves,{equal:true,xRange:[-3,3],yRange:[-4,4],markers})],message:q.status==='transverse'?B('无量纲常系数模型。m≠1 时 r=(y−x)/(m−1)，路径时间 s=x−r。g=r 时 u=r，m 接近 1 会放大横向数据梯度；g=0 时解为零。此线性模型可全局反解，图窗外仍有路径。','Dimensionless constant-coefficient model. For m≠1, r=(y−x)/(m−1) and path time s=x−r. With g=r, u=r and m near 1 amplifies transverse gradients; g=0 gives zero. This linear model is globally invertible even outside the plot.'):q.status==='nonunique'?B('m=1：数据线就是特征线。零数据相容但不唯一，例如 u=0 与 u=y−x。此状态不报告唯一数值。','m=1: the data line is a characteristic. Zero data are compatible but nonunique: u=0 and u=y−x both work. No unique value is reported.'):B('m=1：同一特征线上必须 u 为常数，但 g(r)=r 变化，故不存在满足全部数据的解。','m=1: u must be constant on this characteristic, but g(r)=r varies. No solution satisfies all these data.')};}};
+// Extend established analytic models without introducing numerical time stepping.
+L.superposition.title=B('叠加检验：可加性与数乘性','Superposition: addition and scalar multiplication');
+L.superposition.controls.push(sel('test','检验方式','Identity to test',[['add','可加性','Addition'],['scale','数乘性','Scalar multiplication']]),num('lambda','数乘系数 λ','Scalar λ',-2,2,.1,2));
+const additionCalc=L.superposition.calc;L.superposition.calc=s=>{const result=additionCalc(s);if(s.test==='scale'){
+ const factor=s.mode==='linear'?0:(s.lambda*s.lambda-s.lambda)*s.A*s.A;
+ result.readings=[read('数乘性缺陷最大值（绝对值）','Maximum absolute scaling defect',Math.abs(factor)/2)];
+ result.charts[0].series=[series('数乘性缺陷','Scalar multiplication defect',M.linspace(-Math.PI,Math.PI).map(x=>[x,factor*Math.sin(x)*Math.cos(x)]))];
+ result.message=B('检验 N(λu)−λN(u)，u=A sin x。非线性缺陷为 (λ²−λ)A² sin x cos x。λ=0 或 1 的零缺陷只是特殊情况；线性算子对所有 λ 都为零。','Test N(λu)−λN(u), u=A sin x. The nonlinear defect is (λ²−λ)A² sin x cos x. Zero at λ=0 or 1 is only a special case; the linear operator has zero defect for every λ.');
+ }return result;};
+L.wave.controls.push(sel('view','显示分量','Visible contributions',[['all','全部','All'],['displacement','仅位移项','Displacement only'],['velocity','仅速度项','Velocity only'],['total','仅总解','Total only']]));
+const waveCalc=L.wave.calc;L.wave.calc=s=>{const r=waveCalc(s);const index={displacement:0,velocity:1,total:2}[s.view];if(index!==undefined)r.charts[0].series=[r.charts[0].series[index]];return r;};
+const energyCalc=L.energy.calc;L.energy.calc=s=>{const r=energyCalc(s),w=M.energy(s.A,s.c,s.L,s.a,s.t).w;r.readings.push(read('角频率 ω','Angular frequency ω',w),read('四分之一周期 π/(2ω)','Quarter period π/(2ω)',Math.PI/(2*w)));return r;};
+
+L.convolution.controls.push(num('x','固定观察点 x','Fixed observation x',-3,3,.1,0));
+const convolutionCalc=L.convolution.calc;L.convolution.calc=s=>{const r=convolutionCalc(s);r.readings.push(read('固定点 u(x,t)（闭式）','Fixed-point u(x,t) (exact)',M.gaussian(s.x,s.t,s.k,s.M,s.sigma)));
+ if(s.t>0){const extent=Math.max(5*s.sigma,Math.abs(s.x)+5*Math.sqrt(2*s.k*s.t)),ys=M.linspace(-extent,extent,700);r.charts.push(graph('固定观察点：权重、初值与被积函数','Fixed observation: weight, initial data and integrand','y',B('示意数值（量纲不同）','Illustrative values (different units)'),[series('权重 S(x−y,t)','Weight S(x−y,t)',ys.map(y=>[y,M.kernel(s.x-y,s.t,s.k)])),series('初值 f(y)','Initial f(y)',ys.map(y=>[y,M.gaussian(y,0,s.k,s.M,s.sigma)]),{dash:true}),series('乘积 S(x−y,t)f(y)','Product S(x−y,t)f(y)',ys.map(y=>[y,M.kernel(s.x-y,s.t,s.k)*M.gaussian(y,0,s.k,s.M,s.sigma)]),{color:'#112547'})]));r.message=B(r.message.zh+' 固定点示意中三条曲线量纲不同：核为 1/长度，初值为质量/长度，乘积为质量/长度²；乘积在全直线积分才是 u(x,t)。图窗为有限截断，读数用闭式值。',r.message.en+' The three illustrative curves have different units: kernel 1/length, initial data mass/length, product mass/length². Integrate the product over the whole line to obtain u(x,t). The plot is truncated; the reading uses the exact formula.');}
+ else r.message=B(r.message.zh+' t=0 不绘制奇异权重，仅显示初值和其精确读数。',r.message.en+' At t=0 no singular weight is plotted; only initial data and its exact reading are shown.');return r;};
 })();

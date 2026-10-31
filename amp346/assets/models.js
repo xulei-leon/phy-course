@@ -8,6 +8,8 @@ M.ode=(a,f,y0,x)=>Math.exp(-a*x)*y0+(Math.abs(a)<1e-12?f*x:-f*Math.expm1(-a*x)/a
 M.flux=(a,b,p,q,r,s)=>({edges:[-s*a,(p*a+q)*b,(r*b+s)*a,-q*b],area:(p+r)*a*b});
 M.invariant=(mode,x,y)=>mode==='straight'?x-2*y:mode==='exp'?Math.exp(-x)*y:mode==='circle'?x*x+y*y:y===0?null:-1/y-x*x;
 M.reaction=(x,y)=>(x-1.5*y)**2*Math.exp(-y/2);
+// u_x+u_y=0 with data u(r,mr)=r or 0. Coordinates are dimensionless.
+M.transverse=(m,x,y,data='linear')=>{const determinant=m-1;if(determinant===0)return {determinant,status:data==='zero'?'nonunique':'incompatible',footpoint:null,value:null,sensitivity:null};const r=(y-x)/determinant;return {determinant,status:'transverse',footpoint:[r,m*r],value:data==='zero'?0:r,sensitivity:data==='zero'?0:1/Math.abs(determinant)};};
 M.bump=(x,R=1)=>Math.abs(x)<R?(1-(x/R)**2)**3:0;
 M.bumpIntegral=(a,b,R=1)=>{const F=x=>{const z=Math.max(-1,Math.min(1,x/R));return R*(z-z**3+3*z**5/5-z**7/7);};return F(b)-F(a);};
 M.transport=(profile,c,t,x)=>profile==='bump'?M.bump(x-c*t):Math.exp(-((x-c*t)**2)/2);

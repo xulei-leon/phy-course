@@ -1,0 +1,16 @@
+/* Self-study extensions preserve the existing academic palette. */
+.study-overview{padding:24px;margin:18px 0 32px;background:#f4f9fa;border-left:3px solid var(--teal)}
+.study-overview h2{font-size:22px;margin:0 0 14px}.study-overview p{font-size:15px}.study-overview li{margin:9px 0}
+.prerequisites,.teaching-supplement{margin:26px 0;padding:20px;border:1px solid var(--line);border-radius:4px}
+details{margin:12px 0}summary{cursor:pointer;color:var(--ink);padding:8px 0}details p,.full-solution p{white-space:pre-line}
+.lab-task{padding:10px 20px;background:#f5f8fb;border-left:3px solid var(--teal);font-size:15px}.lab-task p{margin:10px 0}
+.question-meta{font-size:13px;color:var(--muted)}.hint-list{display:flex;flex-wrap:wrap;gap:0 26px;margin:16px 0}.hint-list details{max-width:100%;flex:1 1 240px}
+.quiz-item textarea{display:block;width:100%;box-sizing:border-box;min-height:100px;resize:vertical;font:inherit;color:var(--ink);border:1px solid #a6b5c8;border-radius:4px;padding:12px;margin-top:10px}
+.practice-number{display:block;max-width:100%;width:230px;box-sizing:border-box;padding:10px;font:inherit;margin:10px 0;border:1px solid #a6b5c8;border-radius:4px}
+.full-solution{padding:20px;background:#f4f8fb;margin:16px 0}.full-solution h4{margin:14px 0 8px}.review-toggle{display:block;margin-top:18px;font-size:14px}
+button:disabled{opacity:.55;cursor:not-allowed}.show-solution{margin-top:8px}input[type=checkbox]{margin-right:9px;accent-color:var(--teal)}
+.study-records{border-top:1px solid var(--line);padding:30px 0}.study-records li{margin:12px 0}.study-records p{font-size:14px}.chapter-recap{margin-top:30px}
+.method-table th,.method-table td{white-space:normal;text-align:left;vertical-align:top}.method-table th{position:static;min-width:95px}.method-table p{margin:0}
+.boundary-diagram{margin:20px 0}.boundary-diagram svg{display:block;max-width:100%;width:500px;margin:16px auto;font:16px sans-serif}.boundary-diagram figcaption{font-size:14px}
+.study-overview,.prerequisites,.quiz-item,.study-records{scroll-margin-top:90px}.topic,.full-solution{overflow-wrap:anywhere}
+@media(max-width:760px){.study-overview,.prerequisites,.teaching-supplement{padding:16px}.full-solution{padding:14px}.method-table th,.method-table td{padding:10px}.method-table th{min-width:64px}.study-overview h2{font-size:20px}}

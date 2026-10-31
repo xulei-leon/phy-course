@@ -68,3 +68,10 @@ HTTP/HTTPS 页面只显示文件名和页码，不生成原稿下载链接。原
 Teaching additions include the linearity defect experiment; affine flux model; transversality condition; forced characteristic integral; C² compact bump and its polynomial antiderivative; fixed-end standing-mode energy; exact Dirichlet heat mode; Gaussian initial-data convolution/variance; and the dominated-convergence trace proof. These follow the displayed algebra and are not official exercise solutions.
 
 教学新增模型、例题、自测及上述补充证明均非官方配套答案；解析验证只证明所列模型的相应性质，不是物理实验验收。
+
+
+## Self-study revision / 自学扩展（2026-10-31）
+
+本轮基于既有网页补充，原始 `courseware/` 在当前检出中缺失；上文页码和原稿覆盖为保留的历史映射，未重新核验。新增学习目标、复习卡、推导说明、例题、练习与实验任务统一标为教学补充，不赋予原稿页码。当前数量为 25 道例题、64 道章内练习、4 道综合题、12 个实验。
+
+公开核对：Stanford Math 220A `firstorder.pdf` §2.1–2.2 的非特征条件；Stanford Math 220B `HEATEQN.pdf` §2.8 的有限域弱原理与唯一性条件。链接见 README 和页面出处区；无需下载即可离线学习。源项公式、多项式波动例、驻波能量和高斯卷积是独立代数教学示例，另有数值残差／积分核对。公开参考不替代缺失原稿的核验。

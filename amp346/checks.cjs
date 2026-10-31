@@ -23,7 +23,7 @@ assert.throws(()=>M.kernel(0,0,1));assert.throws(()=>M.kernel(0,1,0));
 console.log('PASS: integrating factors, four-edge oriented flux, characteristic invariants, reaction PDE, transport, wave PDE/initial data/finite support, conserved energy, heat bounds, kernel mass/variance and jump trace.');
 // Validate content, formulas, provenance and every allowed corner of each experiment.
 const app=vm.createContext({console});app.window=app;
-const scripts=['content/01-04.js','content/05-08.js','assets/models.js','assets/experiments.js'];
+const scripts=['content/01-04.js','content/05-08.js','content/study.js','assets/study-ui.js','assets/models.js','assets/experiments.js'];
 for(const f of scripts)vm.runInContext(fs.readFileSync(path.join(root,f),'utf8'),app,{filename:f});
 const chapters=app.PHY.chapters,labs=app.PHY_LABS,katex=require('../phy489/assets/katex/katex.min.js');
 const bilingual=x=>{assert.equal(typeof x.zh,'string');assert.equal(typeof x.en,'string');assert.ok(x.zh.trim()&&x.en.trim());};
@@ -33,9 +33,9 @@ assert.equal(chapters.length,8);
 for(const [i,c] of chapters.entries()){
  assert.equal(c.id,i+1);['title','question','intuition','labTitle','labNote'].forEach(k=>bilingual(c[k]));
  c.topics.forEach(x=>{block(x);assert.ok(x.source.page>=c.pages[0]&&x.source.page<=c.pages[1],`invalid source page in chapter ${c.id}`);topics++;});
- assert.ok(c.derivation.length>=3);c.derivation.forEach(block);block(c.example);assert.ok(c.notes.length);c.notes.forEach(bilingual);assert.equal(c.quizzes.length,3);
- for(const source of c.sources){assert.ok(fs.existsSync(path.join(root,'courseware',source.file)));sources.add(source.file);assert.ok(source.pages[0]>0&&source.pages[1]>=source.pages[0]);}
- c.quizzes.forEach(q=>{bilingual(q.question);q.options.forEach(bilingual);bilingual(q.explanation);assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);});
+ assert.ok(c.derivation.length>=3);c.derivation.forEach(block);block(c.example);assert.ok(c.notes.length);c.notes.forEach(bilingual);assert.equal(c.quizzes.length,8);assert.ok(c.examples.length>=(c.id===3?4:3));assert.ok(c.goals.length>=3&&c.goals.length<=5);c.goals.forEach(bilingual);c.examples.forEach(x=>{block(x);bilingual(x.why);bilingual(x.check);});c.supplements.forEach(block);c.prerequisites.forEach(block);bilingual(c.strategy);bilingual(c.pitfall);bilingual(c.bridge);
+ for(const source of c.sources){if(fs.existsSync(path.join(root,'courseware')))assert.ok(fs.existsSync(path.join(root,'courseware',source.file)));sources.add(source.file);assert.ok(source.pages[0]>0&&source.pages[1]>=source.pages[0]);}
+ [...c.quizzes,...(c.integrated||[])].forEach(q=>{bilingual(q.question);bilingual(q.explanation);bilingual(q.mistake);assert.equal(q.hints.length,2);q.hints.forEach(bilingual);if(q.type==='choice'){q.options.forEach(bilingual);assert.ok(Number.isInteger(q.answer)&&q.answer>=0&&q.answer<q.options.length);}else if(q.type==='number'){assert.ok(Number.isFinite(q.answer)&&q.tolerance>0);}else assert.equal(q.type,'written');});
  for(const key of c.labs){
   const lab=labs[key];assert.ok(lab);usedLabs.add(key);bilingual(lab.title);const base=Object.fromEntries(lab.controls.map(x=>[x.key,x.options?x.options[0][0]:x.value]));const samples=[base];
   for(const ctrl of lab.controls){bilingual(ctrl.label);if(ctrl.options){ctrl.options.forEach(([v,b])=>{bilingual(b);samples.push({...base,[ctrl.key]:v});});}else{assert.ok(ctrl.value>=ctrl.min&&ctrl.value<=ctrl.max);near((ctrl.value-ctrl.min)/ctrl.step,Math.round((ctrl.value-ctrl.min)/ctrl.step),1e-8);for(const value of [ctrl.min,ctrl.max])samples.push({...base,[ctrl.key]:value});}}
@@ -43,7 +43,7 @@ for(const [i,c] of chapters.entries()){
   for(const s of samples){const r=lab.calc(s);states++;assert.ok(r.charts.length);bilingual(r.message);r.readings.forEach(x=>{bilingual(x.label);if(typeof x.value==='object')bilingual(x.value);else assert.ok(!/NaN|Infinity|undefined/.test(String(x.value)),`${key}: invalid reading`);});for(const chart of r.charts){bilingual(chart.title);bilingual(chart.x);bilingual(chart.y);chart.series.forEach(s=>{bilingual(s.name);s.points.forEach(p=>assert.ok(p===null||p.length===2&&p.every(Number.isFinite),`${key}: invalid plot point`));});}}
  }
 }
-assert.equal(sources.size,11);assert.equal(usedLabs.size,11);assert.equal(Object.keys(labs).length,11);
+assert.equal(sources.size,11);assert.equal(usedLabs.size,12);assert.equal(Object.keys(labs).length,12);
 // A wrong sign, a bridged pole, or a c² omission must fail independent mathematics checks.
 const g=(x,y)=>-1/y-x*x;
 for(const [x,y] of [[.3,.7],[-1,2]])near(diff(z=>g(z,y),x)+2*x*y*y*diff(z=>g(x,z),y),0,1e-6);
@@ -55,12 +55,12 @@ for(let id=0;id<=8;id++){
  const f=id?`chapter-${String(id).padStart(2,'0')}.html`:'index.html',html=fs.readFileSync(path.join(root,f),'utf8');assert.ok(html.includes(`data-chapter="${id}"`));assert.ok(html.includes("connect-src 'none'"));
  for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){assert.ok(!/^(https?:|\/)/.test(m[1]));assert.ok(fs.existsSync(path.resolve(root,m[1])),`${f}: missing ${m[1]}`);}
 }
-for(const file of [...scripts,'assets/course.js'])assert.ok(!/\bfetch\s*\(|XMLHttpRequest|https?:\/\//.test(fs.readFileSync(path.join(root,file),'utf8')));
+for(const file of [...scripts,'assets/course.js'])assert.ok(!/\bfetch\s*\(|XMLHttpRequest/.test(fs.readFileSync(path.join(root,file),'utf8')));
 const css=fs.readFileSync(path.join(root,'../phy489/assets/katex/katex.min.css'),'utf8');for(const m of css.matchAll(/url\(([^)]+)\)/g))assert.ok(fs.existsSync(path.join(root,'../phy489/assets/katex',m[1])));
 assert.ok(fs.readFileSync(path.join(root,'../.gitignore'),'utf8').includes('/amp346/courseware/'));
 assert.ok(fs.readFileSync(path.join(root,'../.github/workflows/pages.yml'),'utf8').includes("--exclude='/amp346/courseware/'"));
 assert.ok(fs.readFileSync(path.join(root,'../index.html'),'utf8').includes('href="amp346/index.html"'));
-console.log(`PASS: ${chapters.length} chapters, ${topics} bilingual source topics, 24 explained quizzes, ${equations} formulas, 11 labs / ${states} combined model states, offline resources, root card and source exclusions.`);
+console.log(`PASS: ${chapters.length} chapters, ${topics} bilingual source topics, 64 chapter exercises + 4 integrated problems, ${equations} formulas, 12 labs / ${states} combined model states, offline resources, root card and source exclusions.`);
 
 near(app.APM_MATH.erf(1),.8427007929497149,1e-10);
 near(app.APM_MATH.erf(-2),-.9953222650189527,1e-10);
@@ -71,3 +71,17 @@ for(const t of [.2,.7]){
  near(integral,app.APM_MATH.energy(A,c,L,a,t).total,1e-10);
 }
 console.log('PASS: independent erf reference values, heat-kernel PDE and direct spatial energy integrals.');
+
+const questions=chapters.flatMap(c=>[...c.quizzes,...(c.integrated||[])]);
+assert.equal(questions.length,68);assert.equal(new Set(questions.map(q=>q.id)).size,68);
+assert.equal(chapters.reduce((n,c)=>n+c.examples.length,0),25);
+for(const c of chapters){assert.equal(c.quizzes.filter(q=>q.category==='concept').length,3);assert.equal(c.quizzes.filter(q=>q.category==='calculation').length,3);assert.equal(c.quizzes.filter(q=>q.category==='proof').length,1);assert.equal(c.quizzes.filter(q=>q.category==='transfer').length,1);}
+for(const m of [-2,0,.9,1.1,2])for(const [x,y] of [[0,1],[2,-1]]){const r=M.transverse(m,x,y);near(r.footpoint[1]-r.footpoint[0],y-x);near(r.value,(y-x)/(m-1));near(diff(z=>M.transverse(m,z,y).value,x)+diff(z=>M.transverse(m,x,z).value,y),0,1e-7);}
+assert.equal(M.transverse(1,0,0,'linear').status,'incompatible');assert.equal(M.transverse(1,0,0,'zero').status,'nonunique');
+const forced=(x,y)=>1+((y-x)**2-1)*Math.exp(-x);near(diff(x=>forced(x,.7),.4)+diff(y=>forced(.4,y),.7)+forced(.4,.7),1,1e-7);
+const transportForced=(x,t)=>x*t-t*t;near(diff(t=>transportForced(2,t),.5)+2*diff(x=>transportForced(x,.5),2),2,1e-7);
+const combined=(x,t)=>x-2-(x-2*t-2)*Math.exp(-t);near(diff(t=>combined(2,t),.5)+2*diff(x=>combined(x,.5),2)+combined(2,.5),2,1e-7);near(combined(2,0),0);
+const characteristicData=(x,y)=>1+((y-x)**2-1)*Math.exp(-(2*x-y));near(diff(x=>characteristicData(x,.7),.4)+diff(y=>characteristicData(.4,y),.7)+characteristicData(.4,.7),1,1e-7);near(characteristicData(.3,.6),.09);
+for(const k of [.1,1])for(const t of [.2,1])for(const x of [-1,0,2])near(M.integrate(y=>M.kernel(x-y,t,k)*M.gaussian(y,0,k,1,.8),-12,12,2400),M.gaussian(x,t,k,1,.8),1e-8);
+console.log('PASS: self-study schema, 25 worked examples, 68 unique questions, transversality, independent forced PDE residuals and convolution quadrature.');
+if(!fs.existsSync(path.join(root,'courseware')))console.log('NOT VERIFIED: private source files are absent; page mappings retained, not re-audited.');
